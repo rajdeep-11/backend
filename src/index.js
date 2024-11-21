@@ -9,7 +9,23 @@ dotenv.config({
 //-r dotenv/config --experimental-json-modules
 
 
-connectDB();
+connectDB()
+.then(()=>{
+    //if error occur:
+    app.on("error",(err)=>{
+        console.log("Server not start",err);
+        throw err;
+    });
+    
+    //if no error then listen the app:
+    const portNumber= process.env.PORT || 5000;
+    app.listen(portNumber,()=>{
+        console.log(`Server is running at ${portNumber}`); 
+    });
+})
+.catch((err)=>{
+    console.log("MongoDB connection failed !!!",err);
+});
 
 
 
