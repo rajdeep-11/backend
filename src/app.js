@@ -18,4 +18,11 @@ app.use(express.urlencoded({extended: true,limit: "16kb"}));//to handle URL enco
 app.use(express.static("public"));//save image, folder etc. at own server:
 app.use(cookieParser()); // porform CRED operation in User cookie:
 
+//import the routers:
+import userRouter from "./routes/user.routes.js";
+
+
+//routes declaration:
+app.use("/api/v1/users", userRouter);
+
 export {app}; 
