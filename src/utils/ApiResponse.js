@@ -2,7 +2,7 @@
 //standardized response should be invoked:
 
 class ApiResponse{
-    constructor(statusCode, data,message= success){
+    constructor(statusCode, data,message ="seccess"){
         this.statusCode=statusCode;
         this.data=data;
         this.message=message;

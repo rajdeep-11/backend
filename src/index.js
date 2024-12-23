@@ -21,7 +21,7 @@ connectDB()
     //if no error then listen the app:
     const portNumber= process.env.PORT || 5000;
     app.listen(portNumber,()=>{
-        console.log(`Server is running at ${portNumber}`); 
+        console.log(`⚙️  Server is running at ${portNumber}`); 
     });
 })
 .catch((err)=>{
