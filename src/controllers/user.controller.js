@@ -49,8 +49,8 @@ const registerUser= asyncHandler(async(req,res)=>{
 
     //data from from or Json that is on req.body():
     //if URL genrates any data we see it next:
-    const {fullName,email,username,password}= req.body; // descracture the data:
-    console.log("Email:", email);
+    const {fullName,email,username,password}= req.body; // destracture the data:
+    //console.log("Email:", email);
 
     //if(fullName===""){
     //     throw new ApiError(400,"FullName is required");
@@ -73,7 +73,7 @@ const registerUser= asyncHandler(async(req,res)=>{
     //console.log(existedUser);
 
     if(existedUser){
-        throw new ApiError(409, "uername or email is already exists!");
+        throw new ApiError(409, "username or email is already exists!");
     }
     // console.log(req.files);
     
