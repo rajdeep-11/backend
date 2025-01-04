@@ -4,6 +4,7 @@ import{User} from "../models/user.model.js";
 import {uploadCloudinary} from "../service/fileUpload.js";
 import{ApiResponse} from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 
 //gentare access and refresh tokens:
@@ -507,6 +508,74 @@ const getUserChannelProfile= asyncHandler(async(req,res)=>{
     )
 })
 
+//watch  history pipeline:
+const getWatchHistroy= asyncHandler(async(req,res)=>{
+
+    //Convert User ID to Mongoose ObjectId:
+    //const userId= new mongoose.Types.ObjectId(req.user.id);
+
+    const user= await User.aggregate([
+        {
+            
+            $match:{
+                //_id= req.user?._id [Wrong]
+                _id:new mongoose.Types.ObjectId(req.user._id)
+            }
+        },
+        {
+            $lookup:{
+                from: "video",
+                localField:"watchHistory",
+                foreignField: "_id",
+                as: "watchHistoryDetails",
+                pipeline:[
+                    {
+                        $lookup:{
+                            from:user,
+                            localField: "owner",
+                            foreignField:"_id",
+                            as:"ownerDetails",
+                            pipeline:[
+                                {
+                                    $project:{
+                                        fullName:1,
+                                        username:1,
+                                        avatar:1,
+                                        coverImage:1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        //for stractured the data:
+                        $addFields:{
+                            ownerDetails:{
+                                $first: "$ownerDetails"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ])
+
+    if(!getWatchHistroy.length){
+        throw new ApiError(404, "No watch histoory found");
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            user[0].watchHistroy,
+            "Watch story fetched successfully"
+        )
+    )
+})
+
+
 export {
     registerUser,
     loginUser,
@@ -517,6 +586,7 @@ export {
     updateUserCredentials,
     updateAvatar,
     updateCoverImage,
-    getUserChannelProfile
+    getUserChannelProfile,
+    getWatchHistroy
 }
 
