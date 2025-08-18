@@ -4,7 +4,7 @@ import connectDB from "./db/index.js";
 import {app} from "./app.js";
 
 dotenv.config({
-    path: './env'
+    path: './.env'
 });
 //we change package.json for .env
 //-r dotenv/config --experimental-json-modules
@@ -19,9 +19,9 @@ connectDB()
     });
     
     //if no error then listen the app:
-    const portNumber= process.env.PORT || 5000;
+    const portNumber= process.env.PORT || 8000;
     app.listen(portNumber,()=>{
-        console.log(`⚙️  Server is running at ${portNumber}`); 
+        console.log(`⚙️  Server is running at port :${portNumber}`); 
     });
 })
 .catch((err)=>{
